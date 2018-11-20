@@ -23,7 +23,7 @@ export class RegisterComponent {
 
     public register() {
         if(this.input.firstname && this.input.lastname && this.input.email && this.input.password) {
-            ApplicationSettings.setString("account", JSON.stringify(this.input));
+            ApplicationSettings.setString(this.input.email, JSON.stringify(this.input));
             this.location.back();
         } else {
             (new SnackBar()).simple("All Fields Required!");

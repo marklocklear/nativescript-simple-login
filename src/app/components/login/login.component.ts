@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { RouterExtensions } from "nativescript-angular/router";
 import { SnackBar } from "nativescript-snackbar";
 import * as ApplicationSettings from "application-settings";
+import { Data } from "../../shared-data"
 
 @Component({
     moduleId: module.id,
@@ -12,7 +13,7 @@ export class LoginComponent implements OnInit {
 
     public input: any;
 
-    public constructor(private router: RouterExtensions) {
+    public constructor(private router: RouterExtensions, private data: Data) {
         this.input = {
             "email": "",
             "password": ""
@@ -27,8 +28,9 @@ export class LoginComponent implements OnInit {
 
     public login() {
         if(this.input.email && this.input.password) {
-            let account = JSON.parse(ApplicationSettings.getString("account", "{}"));
+            let account = JSON.parse(ApplicationSettings.getString(this.input.email, "{}"));
             if(this.input.email == account.email && this.input.password == account.password) {
+                this.data.storage = account.email;
                 ApplicationSettings.setBoolean("authenticated", true);
                 this.router.navigate(["/secure"], { clearHistory: true });
             } else {
